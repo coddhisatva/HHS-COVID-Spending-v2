@@ -72,8 +72,14 @@ export const DataProvider = ({ children }) => {
       return;
     }
     
+    console.log("DataContext: Raw data status check:", {
+      contractsLength: rawData.contracts?.length || 0,
+      assistanceLength: rawData.assistance?.length || 0
+    });
+    
     if (rawData.contracts.length === 0 && rawData.assistance.length === 0) {
       console.log("DataContext: No data available, skipping data processing...");
+      console.error("DataContext: Data failed to load. Check network requests and CSV format.");
       return;
     }
 

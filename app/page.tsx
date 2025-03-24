@@ -7,6 +7,11 @@ import GeographicDistribution from './components/GeographicDistribution';
 import { DataProvider } from './contexts/DataContext';
 
 export default function Home() {
+  console.log("Rendering Home page component");
+  
+  // Log that we're about to render the layout
+  console.log("Starting to render dashboard layout");
+  
   return (
     <main className="min-h-screen bg-gray-50">
       <DataProvider>

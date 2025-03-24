@@ -33,28 +33,79 @@ export async function loadData() {
     
     // Parse the CSV data using Papa Parse
     console.log("Parsing contracts CSV data...");
-    const contracts = Papa.parse(contractsData, { 
+    const contractsRaw = Papa.parse(contractsData, { 
       header: true, 
       dynamicTyping: true,
       skipEmptyLines: true 
     }).data;
     
     console.log("Parsing assistance CSV data...");
-    const assistance = Papa.parse(assistanceData, { 
+    const assistanceRaw = Papa.parse(assistanceData, { 
       header: true, 
       dynamicTyping: true,
       skipEmptyLines: true 
     }).data;
     
-    console.log(`Loaded ${contracts.length} contract records and ${assistance.length} assistance records`);
-    console.log("Sample contract record:", contracts.length > 0 ? JSON.stringify(contracts[0]) : "No contracts");
-    console.log("Sample assistance record:", assistance.length > 0 ? JSON.stringify(assistance[0]) : "No assistance");
+    console.log(`Loaded ${contractsRaw.length} raw contract records and ${assistanceRaw.length} raw assistance records`);
+    
+    // Log the available fields from the first record to help debug
+    if (contractsRaw.length > 0) {
+      console.log("Available fields in contracts data:", Object.keys(contractsRaw[0]));
+    }
+    
+    if (assistanceRaw.length > 0) {
+      console.log("Available fields in assistance data:", Object.keys(assistanceRaw[0]));
+    }
+    
+    // Process and normalize the data from the real CSV format
+    const contracts = processRawRecords(contractsRaw);
+    const assistance = processRawRecords(assistanceRaw);
+    
+    console.log(`Processed ${contracts.length} contract records and ${assistance.length} assistance records`);
+    console.log("Sample processed contract record:", contracts.length > 0 ? JSON.stringify(contracts[0]) : "No contracts");
+    console.log("Sample processed assistance record:", assistance.length > 0 ? JSON.stringify(assistance[0]) : "No assistance");
     
     return { contracts, assistance };
   } catch (error) {
     console.error("Error loading data:", error);
     return { contracts: [], assistance: [] };
   }
+}
+
+/**
+ * Process and normalize raw CSV records to the format expected by the application
+ * @param {Array} rawRecords Raw records from CSV parsing
+ * @returns {Array} Processed records with normalized field names
+ */
+function processRawRecords(rawRecords) {
+  console.log("Processing raw records...");
+  
+  return rawRecords.map(record => {
+    // Map fields from the real data to the expected format
+    // Using optional chaining to safely access potentially undefined properties
+    return {
+      // Essential fields for our app functionality
+      transaction_obligated_amount: parseFloat(record.transaction_obligated_amount) || 0,
+      gross_outlay_amount_FYB_to_period_end: parseFloat(record.gross_outlay_amount_by_award_cpe) || 0,
+      
+      // Recipient information
+      recipient_name: record.recipient_name || record.piid_recipient_name || record.fain_recipient_name || 'Unknown Recipient',
+      
+      // Geographic information
+      primary_place_of_performance_state: record.pop_state_code || record.place_of_performance_state || '',
+      
+      // Emergency funding information
+      disaster_emergency_fund_code: record.disaster_emergency_fund_code || record.defc || '',
+      
+      // Additional fields that might be useful
+      award_id: record.award_id || record.piid || record.fain || '',
+      awarding_agency_name: record.awarding_agency_name || record.funding_agency_name || '',
+      program_activity_name: record.program_activity_name || '',
+      
+      // Store the original record for reference if needed
+      _original: record
+    };
+  });
 }
 
 /**
