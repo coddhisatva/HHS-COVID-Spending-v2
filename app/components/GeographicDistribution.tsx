@@ -120,7 +120,7 @@ const GeographicDistribution: React.FC = () => {
 
     // Load the US TopoJSON data
     console.log("Loading US TopoJSON data");
-    d3.json<any>("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
+    d3.json<any>("/assets/maps/states-10m.json")
       .then(us => {
         if (!us) {
           console.error("Failed to load US TopoJSON data");
@@ -367,7 +367,7 @@ const GeographicDistribution: React.FC = () => {
   return (
     <div className="bg-white rounded-lg shadow-sm p-5 h-full border border-gray-200">
       <h2 className="text-lg font-semibold mb-3">Geographic Distribution</h2>
-      <div ref={mapRef} className="h-96 w-full relative" style={{ minHeight: "400px", border: "1px solid #e5e7eb" }}>
+      <div ref={mapRef} className="h-96 w-full relative" style={{ minHeight: "400px", border: "2px solid #cbd5e1", borderRadius: "0.375rem" }}>
         {/* Map will be rendered here by D3 */}
         {mapData.length > 0 && (
           <div className="absolute top-0 right-0 bg-white/75 p-2 text-xs z-10">
