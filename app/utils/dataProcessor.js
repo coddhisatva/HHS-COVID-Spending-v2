@@ -284,13 +284,33 @@ export function prepareGeographicData(filteredData) {
   // Group by state
   const stateData = {};
   
+  // Map state codes to full names
+  const stateNames = {
+    'AL': 'Alabama', 'AK': 'Alaska', 'AZ': 'Arizona', 'AR': 'Arkansas', 'CA': 'California',
+    'CO': 'Colorado', 'CT': 'Connecticut', 'DE': 'Delaware', 'FL': 'Florida', 'GA': 'Georgia',
+    'HI': 'Hawaii', 'ID': 'Idaho', 'IL': 'Illinois', 'IN': 'Indiana', 'IA': 'Iowa',
+    'KS': 'Kansas', 'KY': 'Kentucky', 'LA': 'Louisiana', 'ME': 'Maine', 'MD': 'Maryland',
+    'MA': 'Massachusetts', 'MI': 'Michigan', 'MN': 'Minnesota', 'MS': 'Mississippi', 'MO': 'Missouri',
+    'MT': 'Montana', 'NE': 'Nebraska', 'NV': 'Nevada', 'NH': 'New Hampshire', 'NJ': 'New Jersey',
+    'NM': 'New Mexico', 'NY': 'New York', 'NC': 'North Carolina', 'ND': 'North Dakota', 'OH': 'Ohio',
+    'OK': 'Oklahoma', 'OR': 'Oregon', 'PA': 'Pennsylvania', 'RI': 'Rhode Island', 'SC': 'South Carolina',
+    'SD': 'South Dakota', 'TN': 'Tennessee', 'TX': 'Texas', 'UT': 'Utah', 'VT': 'Vermont',
+    'VA': 'Virginia', 'WA': 'Washington', 'WV': 'West Virginia', 'WI': 'Wisconsin', 'WY': 'Wyoming',
+    'DC': 'District of Columbia', 'PR': 'Puerto Rico', 'VI': 'Virgin Islands', 'GU': 'Guam',
+    'AS': 'American Samoa', 'MP': 'Northern Mariana Islands', 'UM': 'U.S. Minor Outlying Islands'
+  };
+  
   filteredData.forEach(item => {
     if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) 
       return;
       
     const state = item.primary_place_of_performance_state || 'Unknown';
     if (!stateData[state]) {
-      stateData[state] = { amount: 0, count: 0 };
+      stateData[state] = { 
+        amount: 0, 
+        count: 0,
+        stateName: stateNames[state] || 'Unknown Location'
+      };
     }
     
     // Use absolute value for map visualization
@@ -301,6 +321,7 @@ export function prepareGeographicData(filteredData) {
   // Convert to array for the map
   return Object.keys(stateData).map(state => ({
     state,
+    stateName: stateData[state].stateName,
     amount: stateData[state].amount,
     count: stateData[state].count
   }));

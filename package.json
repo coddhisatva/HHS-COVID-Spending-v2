@@ -20,15 +20,19 @@
   "homepage": "https://github.com/coddhisatva/HHS-COVID-Spending-v2#readme",
   "description": "",
   "dependencies": {
+    "@types/d3": "^7.4.3",
     "@types/papaparse": "^5.3.15",
     "@types/react-simple-maps": "^3.0.6",
     "@types/recharts": "^1.8.29",
+    "@types/topojson-client": "^3.1.5",
+    "d3": "^7.9.0",
     "next": "14.0.4",
     "papaparse": "^5.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-simple-maps": "^3.0.0",
-    "recharts": "^2.15.1"
+    "recharts": "^2.15.1",
+    "topojson-client": "^3.1.0"
   },
   "devDependencies": {
     "@types/node": "20.10.6",

@@ -3,48 +3,46 @@ import Header from './components/Header';
 import Sidebar from './components/Sidebar';
 import SummaryMetrics from './components/SummaryMetrics';
 import EmergencyFundingChart from './components/EmergencyFundingChart';
+import GeographicDistribution from './components/GeographicDistribution';
+import { DataProvider } from './contexts/DataContext';
 
 export default function Home() {
   return (
     <main className="min-h-screen bg-gray-50">
-      <Header />
-      
-      <div className="px-4 py-4 max-w-full mx-auto">
-        <div className="flex flex-col md:flex-row gap-4">
-          {/* Sidebar - 20% width */}
-          <div className="w-full md:w-1/5 flex-shrink-0">
-            <Sidebar />
-          </div>
-          
-          {/* Main Content */}
-          <div className="flex-1">
-            {/* Summary Metrics */}
-            <SummaryMetrics />
-            
-            {/* Visualizations - Side by side for pie chart and geography */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              {/* Emergency Funding Visualization */}
-              <EmergencyFundingChart />
-              
-              {/* Geographic Distribution Visualization */}
-              <div className="bg-white rounded-lg shadow-sm p-5">
-                <h2 className="text-lg font-semibold mb-3">Geographic Distribution</h2>
-                <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-                  <p className="text-gray-500 text-sm">Map visualization will be implemented in a future update</p>
-                </div>
-              </div>
+      <DataProvider>
+        <Header />
+        
+        <div className="container mx-auto px-4 py-8">
+          <div className="flex flex-col md:flex-row gap-6">
+            {/* Sidebar with filters - 20% width */}
+            <div className="w-full md:w-1/5">
+              <Sidebar />
             </div>
             
-            {/* Top Recipients Visualization - Full width */}
-            <div className="bg-white rounded-lg shadow-sm p-5">
-              <h2 className="text-lg font-semibold mb-3">Top Recipients</h2>
-              <div className="h-64 flex items-center justify-center bg-gray-50 rounded">
-                <p className="text-gray-500 text-sm">Bar chart will be implemented in a future update</p>
+            {/* Main content area - 80% width */}
+            <div className="w-full md:w-4/5">
+              {/* Summary metrics */}
+              <div className="mb-6">
+                <SummaryMetrics />
+              </div>
+              
+              {/* Visualizations */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+                <EmergencyFundingChart />
+                <GeographicDistribution />
+              </div>
+              
+              {/* Top Recipients visualization */}
+              <div className="bg-white rounded-lg shadow-sm p-5 mb-6">
+                <h2 className="text-lg font-semibold mb-3">Top Recipients</h2>
+                <div className="h-80 flex items-center justify-center">
+                  <p className="text-gray-500">Top Recipients chart will be implemented soon.</p>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
+      </DataProvider>
     </main>
   );
 }
