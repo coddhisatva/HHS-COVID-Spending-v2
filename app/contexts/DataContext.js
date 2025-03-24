@@ -103,19 +103,23 @@ export const DataProvider = ({ children }) => {
       const filtered = filterData(sourceData, filters);
       console.log("DataContext: After filtering, data length:", filtered.length);
       
-      // Prepare data for different visualizations
-      console.log("DataContext: Preparing metrics summary...");
-      const metrics = prepareMetricsSummary(filtered);
+      // Create a safe wrapper for data processing functions
+      const safeProcess = (processFn, defaultValue, label) => {
+        try {
+          const result = processFn(filtered);
+          console.log(`DataContext: ${label} processed successfully:`, result);
+          return result;
+        } catch (err) {
+          console.error(`DataContext: Error processing ${label}:`, err);
+          return defaultValue;
+        }
+      };
       
-      console.log("DataContext: Preparing emergency funding data...");
-      const emergencyFunding = prepareEmergencyFundingData(filtered);
-      console.log("DataContext: Emergency funding data result:", emergencyFunding);
-      
-      console.log("DataContext: Preparing geographic data...");
-      const geographic = prepareGeographicData(filtered);
-      
-      console.log("DataContext: Preparing top recipients data...");
-      const topRecipients = prepareTopRecipientsData(filtered);
+      // Prepare data for different visualizations using safe processing
+      const metrics = safeProcess(prepareMetricsSummary, {}, "Metrics summary");
+      const emergencyFunding = safeProcess(prepareEmergencyFundingData, [], "Emergency funding data");
+      const geographic = safeProcess(prepareGeographicData, [], "Geographic data");
+      const topRecipients = safeProcess(prepareTopRecipientsData, [], "Top recipients data");
       
       // Update state with processed data
       console.log("DataContext: Setting processed data...");

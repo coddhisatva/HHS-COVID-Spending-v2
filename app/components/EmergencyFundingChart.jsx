@@ -193,7 +193,6 @@ const SimplePieChart = ({ data }) => {
           }}
         >
           <div className="font-medium">{tooltipContent.name}</div>
-          <div>Percentage: {tooltipContent.percentage}%</div>
           {tooltipContent.amount && (
             <div>Amount: {formatCurrency(tooltipContent.amount)}</div>
           )}
@@ -233,11 +232,49 @@ const SimplePieChart = ({ data }) => {
 };
 
 const EmergencyFundingChart = () => {
-  // Since we're having issues with the data loading, let's just use mock data for now
-  const displayData = mockData.map((item, index) => ({
-    ...item,
-    fill: COLORS[index % COLORS.length]
-  }));
+  const { data, isLoading, error } = useData();
+  const [chartData, setChartData] = useState([]);
+  const [isMounted, setIsMounted] = useState(false);
+  
+  useEffect(() => {
+    setIsMounted(true);
+    
+    if (data && data.emergencyFunding && data.emergencyFunding.length > 0) {
+      // Process the data for our simple chart
+      const processedData = data.emergencyFunding.map((item, index) => ({
+        name: item.name,
+        percentage: item.percentage || 0,
+        fill: COLORS[index % COLORS.length],
+        amount: item.amount,
+        count: item.count
+      }));
+      setChartData(processedData);
+    }
+  }, [data]);
+  
+  // Handle loading state
+  if (isLoading || !isMounted) {
+    return (
+      <div className="bg-white rounded-lg shadow-sm p-5 h-full">
+        <h2 className="text-lg font-semibold mb-3">Emergency Funding Distribution</h2>
+        <div className="h-64 flex items-center justify-center">
+          <div className="animate-pulse flex flex-col items-center">
+            <div className="rounded-full bg-gray-200 h-32 w-32 mb-4"></div>
+            <div className="h-4 bg-gray-200 rounded w-24 mb-2.5"></div>
+            <div className="h-4 bg-gray-200 rounded w-32"></div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  
+  // Use chart data if available, otherwise use mock data
+  const displayData = chartData.length > 0 
+    ? chartData 
+    : mockData.map((item, index) => ({
+        ...item,
+        fill: COLORS[index % COLORS.length]
+      }));
   
   return (
     <div className="bg-white rounded-lg shadow-sm p-5 h-full">
@@ -245,9 +282,11 @@ const EmergencyFundingChart = () => {
       <div className="flex justify-center items-center h-64 relative">
         <SimplePieChart data={displayData} />
       </div>
-      <div className="text-xs text-gray-500 text-center mt-2">
-        (Temporarily using sample data until database connection is established)
-      </div>
+      {chartData.length === 0 && (
+        <div className="text-xs text-gray-500 text-center mt-2">
+          (Using sample data)
+        </div>
+      )}
     </div>
   );
 };

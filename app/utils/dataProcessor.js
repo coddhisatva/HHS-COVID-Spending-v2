@@ -218,9 +218,9 @@ export function prepareEmergencyFundingData(filteredData) {
   // Group by emergency funding code
   const groupedData = {};
   
+  // Process items with valid transaction amounts
   filteredData.forEach(item => {
     if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) {
-      console.log("Skipping item with null/NaN transaction amount:", item);
       return;
     }
       
@@ -240,6 +240,17 @@ export function prepareEmergencyFundingData(filteredData) {
   
   console.log("Grouped emergency funding data:", groupedData);
   
+  // If no data was grouped (e.g., all transaction amounts were null), 
+  // create a default entry for 'None'
+  if (Object.keys(groupedData).length === 0) {
+    console.log("No valid emergency funding data found, creating default entry");
+    groupedData['None'] = {
+      amount: 0,
+      count: 0,
+      name: 'No Emergency Funding'
+    };
+  }
+  
   // Calculate the total for percentage calculations
   const total = Object.values(groupedData).reduce((sum, g) => sum + g.amount, 0) || 1; // Avoid div by zero
   
@@ -252,6 +263,13 @@ export function prepareEmergencyFundingData(filteredData) {
     percentage: Math.round((groupedData[key].amount / total) * 100)
   }))
   .sort((a, b) => b.amount - a.amount); // Sort by amount descending
+  
+  // Ensure percentages add up to 100%
+  let totalPercentage = result.reduce((sum, item) => sum + item.percentage, 0);
+  if (totalPercentage !== 100 && result.length > 0) {
+    // Add or subtract the difference from the largest item
+    result[0].percentage += (100 - totalPercentage);
+  }
   
   console.log("Final emergency funding chart data:", result);
   return result;
