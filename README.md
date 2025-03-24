@@ -40,6 +40,17 @@ A dashboard for visualizing Department of Health and Human Services (HHS) fundin
 
 4. Open [http://localhost:3000](http://localhost:3000) in your browser
 
+## Deployment
+
+This project is configured for deployment on Vercel:
+
+1. Push your changes to GitHub
+2. Connect your repository to Vercel
+3. Vercel will automatically detect the Next.js configuration
+4. The custom `vercel.json` file configures the build settings:
+   - Sets the output directory to `.next`
+   - Uses the Next.js framework preset
+
 ## Project Structure
 
 ```
@@ -47,13 +58,15 @@ A dashboard for visualizing Department of Health and Human Services (HHS) fundin
 ├── app/                    # Next.js App Router directory
 │   ├── components/         # React components
 │   │   ├── Header.tsx      # Dashboard header
-│   │   ├── FilterPanel.tsx # Filter options panel
+│   │   ├── Sidebar.tsx     # Sidebar filter panel
+│   │   ├── HorizontalFilters.tsx # Horizontal filters component
 │   │   └── SummaryMetrics.tsx # Summary metrics cards
 │   ├── globals.css         # Global styles
 │   ├── layout.tsx          # Root layout
 │   └── page.tsx            # Main dashboard page
 ├── public/                 # Static assets
 ├── next.config.js          # Next.js configuration
+├── vercel.json             # Vercel deployment configuration
 ├── package.json            # Project dependencies and scripts
 ├── postcss.config.js       # PostCSS configuration
 ├── tailwind.config.js      # Tailwind CSS configuration
