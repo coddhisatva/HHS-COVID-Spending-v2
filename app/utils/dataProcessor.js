@@ -81,6 +81,18 @@ function processRawRecords(rawRecords) {
   console.log("Processing raw records...");
   
   return rawRecords.map(record => {
+    // Get state from either place of performance or recipient state
+    let state = record.pop_state_code || 
+                record.place_of_performance_state || 
+                record.primary_place_of_performance_state ||
+                record.recipient_state ||
+                '';
+                
+    // If state is empty but exists in the original record's fields, try those
+    if (!state && record.primary_place_of_performance_state_code) {
+      state = record.primary_place_of_performance_state_code;
+    }
+    
     // Map fields from the real data to the expected format
     // Using optional chaining to safely access potentially undefined properties
     return {
@@ -92,7 +104,7 @@ function processRawRecords(rawRecords) {
       recipient_name: record.recipient_name || record.piid_recipient_name || record.fain_recipient_name || 'Unknown Recipient',
       
       // Geographic information
-      primary_place_of_performance_state: record.pop_state_code || record.place_of_performance_state || '',
+      primary_place_of_performance_state: state,
       
       // Emergency funding information
       disaster_emergency_fund_code: record.disaster_emergency_fund_code || record.defc || '',
@@ -362,6 +374,9 @@ export function prepareEmergencyFundingData(filteredData) {
  * @returns {Array} Data for the geographic distribution map
  */
 export function prepareGeographicData(filteredData) {
+  console.log("prepareGeographicData: Starting with", filteredData.length, "records");
+  console.log("prepareGeographicData: Sample record:", filteredData[0]);
+  
   // Group by state
   const stateData = {};
   
@@ -380,17 +395,41 @@ export function prepareGeographicData(filteredData) {
     'DC': 'District of Columbia', 'PR': 'Puerto Rico', 'VI': 'Virgin Islands', 'GU': 'Guam',
     'AS': 'American Samoa', 'MP': 'Northern Mariana Islands', 'UM': 'U.S. Minor Outlying Islands'
   };
+
+  // Create reverse mapping for full names to codes
+  const stateNameToCode = {};
+  Object.entries(stateNames).forEach(([code, name]) => {
+    stateNameToCode[name.toUpperCase()] = code;
+  });
+  
+  let skippedRecords = 0;
   
   filteredData.forEach(item => {
-    if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) 
+    if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) {
+      skippedRecords++;
       return;
+    }
       
-    const state = item.primary_place_of_performance_state || 'Unknown';
+    let state = item.primary_place_of_performance_state || 'Unknown';
+    
+    // Convert state name to proper format
+    if (state.length === 2) {
+      // If it's a state code, convert to full name
+      state = stateNames[state] || state;
+    } else {
+      // If it's a full name, make sure it matches the TopoJSON format
+      const stateCode = stateNameToCode[state.toUpperCase()];
+      if (stateCode) {
+        state = stateNames[stateCode];
+      }
+    }
+
     if (!stateData[state]) {
       stateData[state] = { 
         amount: 0, 
         count: 0,
-        stateName: stateNames[state] || 'Unknown Location'
+        stateName: state,
+        stateCode: stateNameToCode[state.toUpperCase()] || state
       };
     }
     
@@ -399,13 +438,19 @@ export function prepareGeographicData(filteredData) {
     stateData[state].count++;
   });
   
+  console.log("prepareGeographicData: Skipped", skippedRecords, "records with invalid amounts");
+  console.log("prepareGeographicData: State data:", stateData);
+  
   // Convert to array for the map
-  return Object.keys(stateData).map(state => ({
-    state,
-    stateName: stateData[state].stateName,
+  const result = Object.keys(stateData).map(state => ({
+    state: stateData[state].stateCode,
+    stateName: state,
     amount: stateData[state].amount,
     count: stateData[state].count
   }));
+  
+  console.log("prepareGeographicData: Final result:", result);
+  return result;
 }
 
 /**
