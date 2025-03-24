@@ -1,4 +1,5 @@
 # HHS COVID Spending Dashboard
+<img width="1497" alt="Screenshot 2025-03-24 at 12 14 10 AM" src="https://github.com/user-attachments/assets/a64cf52f-e8f9-4c11-b286-e26dd8f4619c" />
 
 A dashboard for visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response in 2025.
 
