@@ -2,9 +2,6 @@ import React from 'react';
 import Header from './components/Header';
 import FilterPanel from './components/FilterPanel';
 import SummaryMetrics from './components/SummaryMetrics';
-import EmergencyFundingChart from './components/EmergencyFundingChart';
-import GeographicDistribution from './components/GeographicDistribution';
-import TopRecipients from './components/TopRecipients';
 
 export default function Home() {
   return (
@@ -15,10 +12,25 @@ export default function Home() {
       
       <div className="container-width">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <EmergencyFundingChart />
-          <GeographicDistribution />
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-4">Emergency Funding Distribution</h2>
+            <div className="h-80 flex items-center justify-center bg-gray-100 rounded">
+              <p className="text-gray-500">Chart visualization will be implemented in a future update</p>
+            </div>
+          </div>
+          <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+            <h2 className="text-xl font-semibold mb-4">Geographic Distribution</h2>
+            <div className="h-80 flex items-center justify-center bg-gray-100 rounded">
+              <p className="text-gray-500">Map visualization will be implemented in a future update</p>
+            </div>
+          </div>
         </div>
-        <TopRecipients />
+        <div className="bg-white rounded-lg shadow-md p-6 mb-8">
+          <h2 className="text-xl font-semibold mb-4">Top Recipients</h2>
+          <div className="h-80 flex items-center justify-center bg-gray-100 rounded">
+            <p className="text-gray-500">Bar chart will be implemented in a future update</p>
+          </div>
+        </div>
       </div>
     </main>
   );
