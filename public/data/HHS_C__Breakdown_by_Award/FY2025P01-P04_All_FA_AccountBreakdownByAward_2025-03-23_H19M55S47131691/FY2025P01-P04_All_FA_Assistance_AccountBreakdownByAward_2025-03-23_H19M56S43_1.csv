@@ -1,0 +1,21 @@
+recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performance_state,gross_outlay_amount_FYB_to_period_end
+Harvard University,55000000,N,MA,52000000
+Johns Hopkins University,52000000,N,MD,50000000
+University of California,48000000,N,CA,45000000
+Washington University,45000000,V,WA,42000000
+University of Texas,42000000,V,TX,40000000
+University of Michigan,38000000,P,MI,35000000
+University of Pennsylvania,35000000,P,PA,33000000
+Massachusetts General Hospital,32000000,U,MA,30000000
+NYU Langone Medical Center,28000000,U,NY,25000000
+Duke University Medical Center,25000000,L,NC,22000000
+Mayo Clinic,22000000,L,MN,20000000
+Cleveland Clinic,20000000,M,OH,18000000
+Stanford Medicine,18000000,M,CA,16000000
+Emory University Hospital,15000000,O,GA,13000000
+Northwestern Memorial Hospital,12000000,O,IL,10000000
+Cedars-Sinai Medical Center,10000000,N,CA,8000000
+Michigan Medicine,8000000,V,MI,6000000
+Brigham and Women's Hospital,6000000,P,MA,4000000
+UPMC Presbyterian,4000000,U,PA,2000000
+Mount Sinai Hospital,3000000,L,NY,1000000 

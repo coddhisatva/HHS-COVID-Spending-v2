@@ -12,6 +12,20 @@ const mockData = [
   { name: 'Coronavirus Prep Act', percentage: 5, fill: '#00ACC1' }
 ];
 
+// More varied color palette
+const COLORS = [
+  '#4285F4', // Blue
+  '#EA4335', // Red
+  '#FBBC05', // Yellow
+  '#34A853', // Green
+  '#8E24AA', // Purple
+  '#F6BF26', // Gold
+  '#16A2D7', // Light blue
+  '#FF6D00', // Orange
+  '#795548', // Brown
+  '#607D8B'  // Blue gray
+];
+
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
@@ -20,12 +34,14 @@ const formatCurrency = (amount) => {
   }).format(amount);
 };
 
-// Simple static PieChart component
+// Simple static PieChart component with hover effects
 const SimplePieChart = ({ data }) => {
   // Set the dimensions for the pie chart
   const size = 240;
   const center = size / 2;
   const radius = size * 0.4;
+  
+  const [hoveredSlice, setHoveredSlice] = useState(null);
 
   // Calculate the paths for the pie slices
   let startAngle = 0;
@@ -68,14 +84,62 @@ const SimplePieChart = ({ data }) => {
       fill: item.fill,
       name: item.name,
       percentage: item.percentage,
+      amount: item.amount,
+      count: item.count,
       labelX,
-      labelY
+      labelY,
+      midAngle: startAngle - (angle / 2)
     };
   });
 
+  // Tooltip position and content
+  const [tooltipStyle, setTooltipStyle] = useState({
+    display: 'none',
+    left: 0,
+    top: 0
+  });
+  const [tooltipContent, setTooltipContent] = useState({
+    name: '',
+    percentage: 0,
+    amount: 0,
+    count: 0
+  });
+
+  // Handle mouse over slice
+  const handleMouseOver = (slice, event) => {
+    setHoveredSlice(slice);
+    
+    // Set tooltip content
+    setTooltipContent({
+      name: slice.name,
+      percentage: slice.percentage,
+      amount: slice.amount,
+      count: slice.count
+    });
+    
+    // Position tooltip near the mouse
+    const bounds = event.currentTarget.getBoundingClientRect();
+    setTooltipStyle({
+      display: 'block',
+      left: event.clientX - bounds.left + 10, 
+      top: event.clientY - bounds.top + 10
+    });
+  };
+  
+  // Handle mouse leave
+  const handleMouseLeave = () => {
+    setHoveredSlice(null);
+    setTooltipStyle({...tooltipStyle, display: 'none'});
+  };
+
   return (
-    <div className="flex flex-col md:flex-row items-start justify-between w-full">
-      <svg width={size} height={size} viewBox={`0 0 ${size} ${size}`}>
+    <div className="flex flex-col md:flex-row items-start justify-between w-full relative">
+      <svg 
+        width={size} 
+        height={size} 
+        viewBox={`0 0 ${size} ${size}`}
+        className="relative"
+      >
         {slices.map((slice, index) => (
           <path 
             key={index} 
@@ -83,6 +147,22 @@ const SimplePieChart = ({ data }) => {
             fill={slice.fill} 
             stroke="white" 
             strokeWidth="1"
+            onMouseOver={(e) => handleMouseOver(slice, e)}
+            onMouseMove={(e) => {
+              const bounds = e.currentTarget.getBoundingClientRect();
+              setTooltipStyle({
+                display: 'block',
+                left: e.clientX - bounds.left + 20,
+                top: e.clientY - bounds.top
+              });
+            }}
+            onMouseLeave={handleMouseLeave}
+            style={{ 
+              transition: 'transform 0.2s',
+              transform: hoveredSlice === slice ? 'scale(1.05)' : 'scale(1)',
+              transformOrigin: `${center}px ${center}px`,
+              cursor: 'pointer'
+            }}
           />
         ))}
         {slices.map((slice, index) => (
@@ -95,16 +175,48 @@ const SimplePieChart = ({ data }) => {
             fill="white"
             fontSize="12"
             fontWeight="bold"
+            pointerEvents="none"
           >
             {slice.percentage}%
           </text>
         ))}
       </svg>
       
-      <div className="mt-4 md:mt-0">
+      {/* Tooltip */}
+      {tooltipStyle.display === 'block' && (
+        <div 
+          className="absolute bg-white p-2 rounded shadow-md border border-gray-200 z-10 text-sm"
+          style={{
+            left: `${tooltipStyle.left}px`,
+            top: `${tooltipStyle.top}px`,
+            minWidth: '150px'
+          }}
+        >
+          <div className="font-medium">{tooltipContent.name}</div>
+          <div>Percentage: {tooltipContent.percentage}%</div>
+          {tooltipContent.amount && (
+            <div>Amount: {formatCurrency(tooltipContent.amount)}</div>
+          )}
+          {tooltipContent.count && (
+            <div>Transactions: {tooltipContent.count.toLocaleString()}</div>
+          )}
+        </div>
+      )}
+      
+      <div className="mt-4 md:mt-0 md:ml-6">
         <ul className="list-none pl-0">
           {data.map((item, index) => (
-            <li key={index} className="flex items-center mb-2">
+            <li 
+              key={index} 
+              className="flex items-center mb-2"
+              onMouseOver={() => {
+                // Find the corresponding slice
+                const slice = slices[index];
+                setHoveredSlice(slice);
+              }}
+              onMouseLeave={() => setHoveredSlice(null)}
+              style={{ cursor: 'pointer' }}
+            >
               <div 
                 className="w-4 h-4 mr-2" 
                 style={{ backgroundColor: item.fill }}
@@ -124,14 +236,17 @@ const EmergencyFundingChart = () => {
   const { data, isLoading, error } = useData();
   const [chartData, setChartData] = useState([]);
   const [isMounted, setIsMounted] = useState(false);
-  
-  // Color palette for the chart (blues/purples)
-  const COLORS = ['#4285F4', '#5E35B1', '#3949AB', '#039BE5', '#00ACC1', '#00897B', '#7CB342', '#C0CA33'];
+  const [dataError, setDataError] = useState(null);
   
   useEffect(() => {
     setIsMounted(true);
     
+    // Debug data loading
+    console.log("Data context:", data);
+    
     if (data && data.emergencyFunding && data.emergencyFunding.length > 0) {
+      console.log("Emergency funding data:", data.emergencyFunding);
+      
       // Process the data for our simple chart
       const processedData = data.emergencyFunding.map((item, index) => ({
         name: item.name,
@@ -141,6 +256,8 @@ const EmergencyFundingChart = () => {
         count: item.count
       }));
       setChartData(processedData);
+    } else if (data && (!data.emergencyFunding || data.emergencyFunding.length === 0)) {
+      setDataError("No emergency funding data available from the API");
     }
   }, [data]);
   
@@ -161,14 +278,14 @@ const EmergencyFundingChart = () => {
   }
   
   // Handle error state
-  if (error) {
+  if (error || dataError) {
     return (
       <div className="bg-white rounded-lg shadow-sm p-5 h-full">
         <h2 className="text-lg font-semibold mb-3">Emergency Funding Distribution</h2>
         <div className="h-64 flex items-center justify-center">
           <div className="text-red-500 text-center">
             <p>Error loading emergency funding data</p>
-            <p className="text-sm">{error}</p>
+            <p className="text-sm">{error || dataError}</p>
           </div>
         </div>
       </div>
@@ -176,12 +293,15 @@ const EmergencyFundingChart = () => {
   }
 
   // Handle empty data state - show mockup data instead of empty state
-  const displayData = chartData.length > 0 ? chartData : mockData;
+  const displayData = chartData.length > 0 ? chartData : mockData.map((item, index) => ({
+    ...item,
+    fill: COLORS[index % COLORS.length]
+  }));
   
   return (
     <div className="bg-white rounded-lg shadow-sm p-5 h-full">
       <h2 className="text-lg font-semibold mb-4">Emergency Funding Distribution</h2>
-      <div className="flex justify-center items-center h-64">
+      <div className="flex justify-center items-center h-64 relative">
         <SimplePieChart data={displayData} />
       </div>
       {chartData.length === 0 && (

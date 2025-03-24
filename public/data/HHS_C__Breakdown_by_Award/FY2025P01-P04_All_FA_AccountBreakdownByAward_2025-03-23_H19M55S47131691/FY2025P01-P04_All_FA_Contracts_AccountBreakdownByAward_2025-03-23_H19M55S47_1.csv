@@ -1,0 +1,21 @@
+recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performance_state,gross_outlay_amount_FYB_to_period_end
+Moderna US Inc,135000000,N,MA,125000000
+Pfizer Inc,115000000,N,NY,105000000
+Johnson & Johnson,95000000,N,NJ,90000000
+Genentech USA Inc,85000000,V,CA,82000000
+McKesson Corporation,75000000,V,TX,70000000
+Loyal Source Govt Services,65000000,P,FL,62000000
+OptumServe Tech Services,55000000,P,CA,52000000
+Quest Diagnostics,45000000,U,NJ,42000000
+Abbott Laboratories,40000000,U,IL,38000000
+Thermo Fisher Scientific,35000000,L,MA,33000000
+Walgreens,30000000,L,IL,28000000
+CVS Pharmacy,25000000,M,RI,23000000
+Eli Lilly and Company,20000000,M,IN,18000000
+Regeneron Pharmaceuticals,18000000,O,NY,16000000
+AstraZeneca,15000000,O,DE,13000000
+BioReference Laboratories,12000000,N,NJ,10000000
+Labcorp,10000000,V,NC,8000000
+Mayo Clinic Laboratories,9000000,P,MN,7000000
+Merit Medical Systems,8000000,U,UT,6000000
+BD (Becton Dickinson),7000000,L,NJ,5000000 
