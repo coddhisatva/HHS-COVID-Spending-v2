@@ -6,19 +6,40 @@ import Papa from 'papaparse';
  */
 export async function loadData() {
   try {
-    const contractsResponse = await fetch('/data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv');
-    const contractsData = await contractsResponse.text();
+    console.log("Starting to load CSV data...");
     
-    const assistanceResponse = await fetch('/data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv');
+    const contractsUrl = '/data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv';
+    const assistanceUrl = '/data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv';
+    
+    console.log("Attempting to fetch contracts data from:", contractsUrl);
+    const contractsResponse = await fetch(contractsUrl);
+    
+    if (!contractsResponse.ok) {
+      throw new Error(`Failed to fetch contracts data: ${contractsResponse.status} ${contractsResponse.statusText}`);
+    }
+    
+    const contractsData = await contractsResponse.text();
+    console.log("Contracts data fetched successfully, first 100 chars:", contractsData.substring(0, 100));
+    
+    console.log("Attempting to fetch assistance data from:", assistanceUrl);
+    const assistanceResponse = await fetch(assistanceUrl);
+    
+    if (!assistanceResponse.ok) {
+      throw new Error(`Failed to fetch assistance data: ${assistanceResponse.status} ${assistanceResponse.statusText}`);
+    }
+    
     const assistanceData = await assistanceResponse.text();
+    console.log("Assistance data fetched successfully, first 100 chars:", assistanceData.substring(0, 100));
     
     // Parse the CSV data using Papa Parse
+    console.log("Parsing contracts CSV data...");
     const contracts = Papa.parse(contractsData, { 
       header: true, 
       dynamicTyping: true,
       skipEmptyLines: true 
     }).data;
     
+    console.log("Parsing assistance CSV data...");
     const assistance = Papa.parse(assistanceData, { 
       header: true, 
       dynamicTyping: true,
@@ -26,6 +47,8 @@ export async function loadData() {
     }).data;
     
     console.log(`Loaded ${contracts.length} contract records and ${assistance.length} assistance records`);
+    console.log("Sample contract record:", contracts.length > 0 ? JSON.stringify(contracts[0]) : "No contracts");
+    console.log("Sample assistance record:", assistance.length > 0 ? JSON.stringify(assistance[0]) : "No assistance");
     
     return { contracts, assistance };
   } catch (error) {
@@ -181,12 +204,25 @@ export function prepareMetricsSummary(filteredData) {
  * @returns {Array} Data for the emergency funding distribution chart
  */
 export function prepareEmergencyFundingData(filteredData) {
+  console.log("prepareEmergencyFundingData called with", filteredData.length, "records");
+  
+  // Log the disaster_emergency_fund_code values that exist in the data
+  const codes = new Set();
+  filteredData.forEach(item => {
+    if (item.disaster_emergency_fund_code) {
+      codes.add(item.disaster_emergency_fund_code);
+    }
+  });
+  console.log("Emergency funding codes found in data:", Array.from(codes));
+  
   // Group by emergency funding code
   const groupedData = {};
   
   filteredData.forEach(item => {
-    if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) 
+    if (item.transaction_obligated_amount === null || isNaN(item.transaction_obligated_amount)) {
+      console.log("Skipping item with null/NaN transaction amount:", item);
       return;
+    }
       
     const code = item.disaster_emergency_fund_code || 'None';
     if (!groupedData[code]) {
@@ -202,11 +238,13 @@ export function prepareEmergencyFundingData(filteredData) {
     groupedData[code].count++;
   });
   
+  console.log("Grouped emergency funding data:", groupedData);
+  
   // Calculate the total for percentage calculations
   const total = Object.values(groupedData).reduce((sum, g) => sum + g.amount, 0) || 1; // Avoid div by zero
   
   // Convert to array for the pie chart
-  return Object.keys(groupedData).map(key => ({
+  const result = Object.keys(groupedData).map(key => ({
     code: key,
     name: groupedData[key].name,
     amount: groupedData[key].amount,
@@ -214,6 +252,9 @@ export function prepareEmergencyFundingData(filteredData) {
     percentage: Math.round((groupedData[key].amount / total) * 100)
   }))
   .sort((a, b) => b.amount - a.amount); // Sort by amount descending
+  
+  console.log("Final emergency funding chart data:", result);
+  return result;
 }
 
 /**

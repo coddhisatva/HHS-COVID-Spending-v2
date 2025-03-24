@@ -46,14 +46,19 @@ export const DataProvider = ({ children }) => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        console.log("DataContext: Starting to fetch data...");
         setIsLoading(true);
         const data = await loadData();
+        console.log("DataContext: Data loaded successfully:", {
+          contractsLength: data.contracts.length,
+          assistanceLength: data.assistance.length
+        });
         setRawData(data);
         setIsLoading(false);
       } catch (err) {
+        console.error('DataContext: Error loading data:', err);
         setError('Failed to load data. Please try again later.');
         setIsLoading(false);
-        console.error('Error loading data:', err);
       }
     };
 
@@ -62,9 +67,23 @@ export const DataProvider = ({ children }) => {
 
   // Process data when raw data or filters change
   useEffect(() => {
-    if (isLoading || rawData.contracts.length === 0) return;
+    if (isLoading) {
+      console.log("DataContext: Still loading, skipping data processing...");
+      return;
+    }
+    
+    if (rawData.contracts.length === 0 && rawData.assistance.length === 0) {
+      console.log("DataContext: No data available, skipping data processing...");
+      return;
+    }
 
     try {
+      console.log("DataContext: Processing data with filters:", filters);
+      console.log("DataContext: Raw data status:", {
+        contractsLength: rawData.contracts.length,
+        assistanceLength: rawData.assistance.length
+      });
+      
       // Combine contracts and assistance data
       const allData = [...rawData.contracts, ...rawData.assistance];
       
@@ -78,16 +97,28 @@ export const DataProvider = ({ children }) => {
         sourceData = allData;
       }
       
+      console.log("DataContext: Selected data source length:", sourceData.length);
+      
       // Apply all other filters
       const filtered = filterData(sourceData, filters);
+      console.log("DataContext: After filtering, data length:", filtered.length);
       
       // Prepare data for different visualizations
+      console.log("DataContext: Preparing metrics summary...");
       const metrics = prepareMetricsSummary(filtered);
+      
+      console.log("DataContext: Preparing emergency funding data...");
       const emergencyFunding = prepareEmergencyFundingData(filtered);
+      console.log("DataContext: Emergency funding data result:", emergencyFunding);
+      
+      console.log("DataContext: Preparing geographic data...");
       const geographic = prepareGeographicData(filtered);
+      
+      console.log("DataContext: Preparing top recipients data...");
       const topRecipients = prepareTopRecipientsData(filtered);
       
       // Update state with processed data
+      console.log("DataContext: Setting processed data...");
       setData({
         filteredData: filtered,
         metrics,
@@ -96,18 +127,20 @@ export const DataProvider = ({ children }) => {
         topRecipients
       });
     } catch (err) {
+      console.error('DataContext: Error processing data:', err);
       setError('Error processing data.');
-      console.error('Error processing data:', err);
     }
   }, [rawData, filters, isLoading]);
 
   // Function to update filters
   const updateFilters = (newFilters) => {
+    console.log("DataContext: Updating filters:", newFilters);
     setFilters(prev => ({ ...prev, ...newFilters }));
   };
 
   // Function to reset all filters
   const resetFilters = () => {
+    console.log("DataContext: Resetting filters to default");
     setFilters(defaultFilters);
   };
 
