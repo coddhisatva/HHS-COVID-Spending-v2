@@ -8,9 +8,9 @@ type CheckboxFilterProps = {
 
 const CheckboxFilterGroup = ({ title, name, options }: CheckboxFilterProps) => {
   return (
-    <div className="mb-6">
-      <h3 className="font-medium text-gray-700 mb-3">{title}</h3>
-      <div className="space-y-2">
+    <div className="mb-5">
+      <h3 className="font-medium text-gray-700 mb-2">{title}</h3>
+      <div className="space-y-1.5">
         {options.map((option) => (
           <div key={option.id} className="flex items-center">
             <input
@@ -18,9 +18,9 @@ const CheckboxFilterGroup = ({ title, name, options }: CheckboxFilterProps) => {
               id={option.id}
               name={name}
               value={option.value}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+              className="h-3.5 w-3.5 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor={option.id} className="ml-2 text-sm text-gray-700">
+            <label htmlFor={option.id} className="ml-1.5 text-xs text-gray-700">
               {option.label}
             </label>
           </div>
@@ -34,11 +34,16 @@ const Sidebar = () => {
   const emergencyFundingOptions = [
     { id: 'cares-act', label: 'CARES Act', value: 'cares-act' },
     { id: 'american-rescue-plan', label: 'American Rescue Plan', value: 'american-rescue-plan' },
-    { id: 'covid-19-supplemental', label: 'COVID-19 Supplemental', value: 'covid-19-supplemental' },
+    { id: 'coronavirus-prep-act', label: 'Coronavirus Prep. Act', value: 'coronavirus-prep-act' },
     { id: 'paycheck-protection', label: 'Paycheck Protection Program', value: 'paycheck-protection' },
     { id: 'families-first', label: 'Families First Coronavirus Response Act', value: 'families-first' },
     { id: 'other-emergency', label: 'Other Emergency Funding', value: 'other-emergency' },
     { id: 'no-emergency', label: 'No Emergency Funding', value: 'no-emergency' },
+  ];
+
+  const financialTypeOptions = [
+    { id: 'all-financial-activity', label: 'All Financial Activity', value: 'all-financial' },
+    { id: 'commitments-only', label: 'Commitments Only', value: 'commitments-only' },
   ];
 
   const topRecipientsOptions = [
@@ -59,13 +64,19 @@ const Sidebar = () => {
   ];
 
   return (
-    <aside className="w-full md:w-1/5 bg-white p-5 rounded-lg shadow-sm">
-      <h2 className="text-lg font-semibold mb-4">Filters</h2>
+    <aside className="w-full bg-white p-4 rounded-lg shadow-sm">
+      <h2 className="text-base font-semibold mb-4">Filters</h2>
       
       <CheckboxFilterGroup
-        title="Emergency Funding"
+        title="Emergency Fund"
         name="emergency-funding"
         options={emergencyFundingOptions}
+      />
+      
+      <CheckboxFilterGroup
+        title="Financial Type"
+        name="financial-type"
+        options={financialTypeOptions}
       />
       
       <CheckboxFilterGroup
@@ -80,7 +91,7 @@ const Sidebar = () => {
         options={geographyOptions}
       />
       
-      <button className="w-full py-2 mt-4 text-sm bg-gray-100 text-gray-700 rounded hover:bg-gray-200">
+      <button className="w-full py-2 mt-2 text-xs bg-gray-100 text-gray-700 rounded hover:bg-gray-200 transition-colors">
         Clear All Filters
       </button>
     </aside>

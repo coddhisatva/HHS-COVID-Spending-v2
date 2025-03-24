@@ -9,9 +9,9 @@ type HorizontalRadioFilterProps = {
 
 const HorizontalRadioFilter = ({ label, name, options, defaultSelected }: HorizontalRadioFilterProps) => {
   return (
-    <div className="flex items-center space-x-2 mr-6">
-      <span className="text-sm font-medium text-gray-700">{label}:</span>
-      <div className="flex items-center space-x-3">
+    <div className="flex items-center space-x-1 mr-2">
+      <span className="text-xs font-medium text-gray-700">{label}:</span>
+      <div className="flex items-center space-x-2">
         {options.map((option) => (
           <div key={option.id} className="flex items-center">
             <input
@@ -20,9 +20,9 @@ const HorizontalRadioFilter = ({ label, name, options, defaultSelected }: Horizo
               name={name}
               value={option.value}
               defaultChecked={option.value === defaultSelected}
-              className="h-4 w-4 text-blue-600 focus:ring-blue-500"
+              className="h-3 w-3 text-blue-600 focus:ring-blue-500"
             />
-            <label htmlFor={option.id} className="ml-1 text-sm text-gray-700">
+            <label htmlFor={option.id} className="ml-1 text-xs text-gray-700">
               {option.label}
             </label>
           </div>
@@ -52,21 +52,21 @@ const HorizontalFilters = () => {
   ];
 
   return (
-    <div className="flex flex-wrap items-center">
+    <div className="flex flex-wrap items-center text-sm border-r pr-3 mr-3">
       <HorizontalRadioFilter
         label="Financial Type"
         name="financial-type"
         options={financialTypeOptions}
         defaultSelected="all"
       />
-      <span className="mx-2 text-gray-300">|</span>
+      <span className="mx-1 text-gray-300">|</span>
       <HorizontalRadioFilter
         label="Transaction Type"
         name="transaction-type"
         options={transactionTypeOptions}
         defaultSelected="all"
       />
-      <span className="mx-2 text-gray-300">|</span>
+      <span className="mx-1 text-gray-300">|</span>
       <HorizontalRadioFilter
         label="Data Source"
         name="data-source"
