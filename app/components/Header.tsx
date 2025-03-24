@@ -49,9 +49,9 @@ const Header = () => {
       <div className="px-4 max-w-full mx-auto">
         <div className="flex flex-wrap items-center justify-between">
           <div className="flex-shrink-0 mr-4">
-            <h1 className="text-2xl font-bold">HHS COVID Spending Dashboard</h1>
+            <h1 className="text-2xl font-bold">HHS COVID Spending Dashboard 2025</h1>
             <p className="text-sm text-gray-600 hidden md:block">
-              Visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response
+              Visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response in 2025
             </p>
           </div>
           

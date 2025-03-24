@@ -1,6 +1,10 @@
 # HHS COVID Spending Dashboard
 
-A dashboard for visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response.
+A dashboard for visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response in 2025.
+
+Live site: https://hhs-covid-spending-v2.vercel.app/
+
+Data from: https://www.usaspending.gov/download_center/custom_award_data
 
 ## Features
 

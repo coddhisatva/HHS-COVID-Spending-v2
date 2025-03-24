@@ -7,8 +7,8 @@ import { DataProvider } from './contexts/DataContext';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'HHS COVID Spending Dashboard',
-  description: 'Visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response',
+  title: 'HHS COVID Spending Dashboard 2025',
+  description: 'Visualizing Department of Health and Human Services (HHS) funding data for COVID-19 response in 2025',
 };
 
 export default function RootLayout({
