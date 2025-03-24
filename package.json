@@ -20,7 +20,9 @@
   "homepage": "https://github.com/coddhisatva/HHS-COVID-Spending-v2#readme",
   "description": "",
   "dependencies": {
+    "@types/papaparse": "^5.3.15",
     "next": "14.0.4",
+    "papaparse": "^5.5.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-resize-detector": "^7.1.2",
