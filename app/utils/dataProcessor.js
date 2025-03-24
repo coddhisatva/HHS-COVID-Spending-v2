@@ -158,6 +158,22 @@ export function filterData(data, filters) {
 export function prepareMetricsSummary(filteredData) {
   console.log("prepareMetricsSummary called with", filteredData.length, "records");
   
+  // Check for negative values explicitly in the data
+  const negativeRecords = filteredData.filter(item => 
+    item.transaction_obligated_amount !== null &&
+    item.transaction_obligated_amount < 0
+  );
+  
+  console.log(`Found ${negativeRecords.length} records with negative transaction_obligated_amount values`);
+  
+  if (negativeRecords.length > 0) {
+    // Log a few examples of negative values
+    console.log("Examples of negative values:");
+    negativeRecords.slice(0, 3).forEach((record, index) => {
+      console.log(`  ${index + 1}. ${record.recipient_name || 'Unknown'}: ${record.transaction_obligated_amount}`);
+    });
+  }
+  
   // Log a sample of transaction amounts to see what's in the data
   const sampleValues = filteredData.slice(0, 10).map(item => ({
     amount: item.transaction_obligated_amount,
