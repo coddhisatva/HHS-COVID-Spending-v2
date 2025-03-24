@@ -1,0 +1,175 @@
+---
+description: 
+globs: 
+alwaysApply: true
+---
+Project: HHS Funding Dashboard
+
+Objective: Create an interactive web dashboard to visualize Department of Health and Human Services (HHS) funding data, with a unified view of both contracts and financial assistance data, and special emphasis on emergency funding acts and geographic distribution.
+
+Technical Stack:
+- Framework: Next.js with App Router
+- Styling: Tailwind CSS with shadcn/ui components
+- Visualizations: Recharts for standard charts, D3.js for geographic maps and custom visualizations
+- Data Processing: Lodash for data manipulation, PapaParse if needed for CSV processing
+- State Management: React Context for global state
+- Deployment: Vercel
+
+Data Structure and Processing:
+1. Data Sources:
+   - Contracts dataset: FY2025P01P04_All_FA_Contracts_AccountBreakdownByAward CSV
+   - Financial assistance dataset: FY2025P01P04_All_FA_Assistance_AccountBreakdownByAward CSV
+   - Both datasets contain approximately 80 columns, most of which can be removed for visualization purposes
+
+2. Critical Financial Columns:
+   - transaction_obligated_amount: Contains both positive values (new obligations) and negative values (deobligations)
+   - gross_outlay_amount_FYB_to_period_end: Contains actual payments made
+   - An important characteristic: For any given row, typically only one of these columns has a value (not both)
+
+3. Data Transformation Process:
+   - Convert original CSVs to optimized JSON format
+   - Remove unnecessary fields that won't be used for visualization or filtering
+   - Normalize field names across datasets for consistency
+   - Pre-calculate common aggregations to improve performance
+   - Create a unified data structure that can represent both datasets
+   - Flag each record with its source dataset (contracts vs. assistance)
+
+4. Key Data Dimensions to Preserve:
+   - Financial amounts (transaction_obligated_amount, gross_outlay_amount_FYB_to_period_end)
+   - Emergency funding acts (disaster_emergency_fund_code, disaster_emergency_fund_name)
+   - Geographic information (primary_place_of_performance_state)
+   - Program categories (program_activity_name, object_class_name, federal_account_name)
+   - Recipients (recipient_name)
+   - Award details (award_type, award_id_piid, award_id_fain)
+   - Dates (award_latest_action_date)
+
+5. JSON Structure:
+   - Metadata section with dataset-level information (record counts, totals, data range)
+   - Summaries section with pre-calculated aggregations (by funding act, by state, by program)
+   - Transactions section with individual records (simplified from original data)
+
+Financial Categorization:
+1. Primary Financial Toggle:
+   - "Allocations": Combines positive obligations and payments (money going out)
+   - "Deallocations": Combines deobligations and negative payment adjustments (money coming back)
+   - "All": Shows both allocations and deallocations together
+
+2. Secondary Financial Filter (optional):
+   - "All Financial Activity" (default)
+   - "Commitments Only" (obligations/deobligations)
+   - "Payments Only" (disbursements)
+
+3. Visual Distinction:
+   - Use consistent color schemes (green for allocations, red for deallocations)
+   - Provide clear labeling of the financial category being viewed
+   - Include subtle visual indicators to distinguish commitments from payments when viewed together
+
+Dashboard UI Components:
+1. Layout Structure:
+   - Left sidebar for filters
+   - Top section for key metrics with clear visual distinction between positive/negative values
+   - Main visualization area in center with primary visualizations
+   - Optional data table (expandable/collapsible) below or on right side
+   - Responsive design (prioritizing desktop but functional on tablet)
+
+2. Filtering System:
+   - Dataset toggle: View contracts data, financial assistance data, or combined
+   - Financial toggle: Allocations, Deallocations, or All (as described above)
+   - Emergency funding act: Filter by specific acts (CARES Act, American Rescue Plan, etc.)
+   - Geographic filter: Select states on map or from dropdown
+   - Additional filters for recipients, programs, object classes, and dates
+   - Show active filters as removable chips/badges
+   - Include "clear all filters" button
+   - Persist filter selections in URL parameters
+
+3. Core Visualizations:
+   a. Pie chart showing distribution by emergency funding act:
+      - Visual breakdown of funding by different emergency acts
+      - Interactive segments that filter the dashboard when clicked
+      - Clear legend with full names of emergency funding acts
+      - Tooltips showing detailed amounts and percentages
+
+   b. US map showing geographic distribution by state:
+      - Choropleth map with color intensity based on funding amounts
+      - State-level tooltips showing detailed funding information
+      - Interactive states that filter the dashboard when clicked
+      - Legend explaining the color scale
+
+   c. Bar charts for recipients, programs, or object classes:
+      - Horizontal bar charts showing top items by amount
+      - Sorted by value (descending)
+      - Interactive bars that filter the dashboard when clicked
+      - Options to switch between different categorizations
+
+4. Supporting Elements:
+   - Summary metrics cards showing totals for selected filters
+   - Dynamic supporting visualizations that adapt to current filter selections
+   - Data table for viewing detailed records with sorting and filtering
+   - Export functionality for filtered data (CSV, Excel)
+   - Information tooltips explaining financial terms and concepts
+
+Interaction Requirements:
+1. Cross-filtering capabilities:
+   - All visualizations should be connected to the global filter state
+   - Clicking on elements in one visualization should update filters and affect all other visualizations
+   - Filter panel controls should provide detailed selection options
+   - URL parameters should capture and restore filter state
+
+2. Dynamic Visualization Behavior:
+   - Visualizations should update immediately when filters change
+   - Appropriate loading states should be shown during data processing
+   - Empty states should be handled gracefully with helpful messages
+   - Tooltips should provide detailed information on hover
+
+3. Performance Considerations:
+   - Implement data caching for common filter combinations
+   - Use virtualization for large data tables
+   - Optimize rendering with proper React practices (memoization, etc.)
+   - Consider chunking data for progressive loading of large datasets
+
+4. User Experience Enhancements:
+   - Include subtle animations for state transitions
+   - Provide clear feedback for all user interactions
+   - Implement consistent visual language throughout
+   - Support keyboard navigation and screen reader accessibility
+   - Optional dark/light theme toggle (nice-to-have)
+
+Implementation Requirements:
+1. Data Processing:
+   - Create sample JSON data that reflects the structure of processed HHS funding data
+   - Implement utility functions for filtering and aggregating data
+   - Handle edge cases like missing values and data type inconsistencies
+
+2. Visualization Components:
+   - Create reusable, configurable visualization components
+   - Implement proper responsive behavior for different screen sizes
+   - Use consistent styling and theming across all visualizations
+   - Include appropriate loading, empty, and error states
+
+3. State Management:
+   - Implement React Context for global application state
+   - Handle filter state changes efficiently
+   - Support URL parameter synchronization for sharing
+   - Optimize for performance with large datasets
+
+4. Code Organization:
+   - Follow a clear component structure with appropriate separation of concerns
+   - Implement proper TypeScript typing for data and components
+   - Include meaningful comments and documentation
+   - Follow consistent code style and best practices
+
+Deployment and Maintenance:
+1. Vercel Deployment:
+   - Configure for optimal performance on Vercel
+   - Implement proper environment variables if needed
+   - Set up appropriate caching strategies
+
+2. Browser Compatibility:
+   - Ensure compatibility with modern browsers (Chrome, Firefox, Safari, Edge)
+   - Implement graceful degradation for older browsers
+   - Test responsive behavior across different device sizes
+
+3. Performance Targets:
+   - Initial load time under 3 seconds
+   - Filter response time under 500ms
+   - Smooth animations and transitions (60fps)
