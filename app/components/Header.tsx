@@ -2,7 +2,7 @@ import React from 'react';
 
 const Header = () => {
   return (
-    <header className="py-8">
+    <header className="bg-white border-b border-gray-200 py-6 mb-6">
       <div className="container-width">
         <h1 className="text-3xl font-bold mb-2">HHS COVID Spending Dashboard</h1>
         <p className="text-lg text-gray-600">

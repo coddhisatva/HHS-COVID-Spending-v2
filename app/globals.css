@@ -10,12 +10,8 @@
 
 body {
   color: rgb(var(--foreground-rgb));
-  background: linear-gradient(
-      to bottom,
-      rgb(var(--background-start-rgb)),
-      rgb(var(--background-end-rgb))
-    )
-    fixed;
+  background: rgb(var(--background-start-rgb));
+  min-height: 100vh;
 }
 
 @layer components {
@@ -23,11 +19,7 @@ body {
     @apply max-w-[1200px] mx-auto px-4;
   }
   
-  .card {
+  .metric-card {
     @apply bg-white rounded-lg shadow-md p-6;
-  }
-  
-  .filter-section {
-    @apply bg-white rounded-lg shadow-sm p-4;
   }
 } 

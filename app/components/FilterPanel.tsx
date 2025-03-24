@@ -16,7 +16,7 @@ type CheckboxFilterProps = {
 const RadioFilterGroup = ({ title, name, options, defaultSelected }: RadioFilterProps) => {
   return (
     <div className="space-y-2">
-      <h3 className="font-medium text-sm">{title}</h3>
+      <h3 className="font-medium text-sm mb-2">{title}</h3>
       <div className="space-y-1">
         {options.map((option) => (
           <div key={option.id} className="flex items-center">
@@ -41,7 +41,7 @@ const RadioFilterGroup = ({ title, name, options, defaultSelected }: RadioFilter
 const CheckboxFilterGroup = ({ title, name, options }: CheckboxFilterProps) => {
   return (
     <div className="space-y-2">
-      <h3 className="font-medium text-sm">{title}</h3>
+      <h3 className="font-medium text-sm mb-2">{title}</h3>
       <div className="space-y-1">
         {options.map((option) => (
           <div key={option.id} className="flex items-center">
@@ -92,27 +92,33 @@ const FilterPanel = () => {
   ];
 
   return (
-    <div className="filter-section mb-8">
+    <div className="bg-white rounded-lg shadow-sm p-6 mb-8">
       <div className="container-width">
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <RadioFilterGroup
-            title="Financial Type"
-            name="financial-type"
-            options={financialTypeOptions}
-            defaultSelected="all"
-          />
-          <RadioFilterGroup
-            title="Transaction Type"
-            name="transaction-type"
-            options={transactionTypeOptions}
-            defaultSelected="all"
-          />
-          <RadioFilterGroup
-            title="Data Source"
-            name="data-source"
-            options={dataSourceOptions}
-            defaultSelected="all"
-          />
+        <div className="grid grid-cols-4 gap-8">
+          <div>
+            <RadioFilterGroup
+              title="Financial Type"
+              name="financial-type"
+              options={financialTypeOptions}
+              defaultSelected="all"
+            />
+          </div>
+          <div>
+            <RadioFilterGroup
+              title="Transaction Type"
+              name="transaction-type"
+              options={transactionTypeOptions}
+              defaultSelected="all"
+            />
+          </div>
+          <div>
+            <RadioFilterGroup
+              title="Data Source"
+              name="data-source"
+              options={dataSourceOptions}
+              defaultSelected="all"
+            />
+          </div>
           <div>
             <CheckboxFilterGroup
               title="Emergency Funding"
@@ -123,7 +129,7 @@ const FilterPanel = () => {
         </div>
         
         <div className="flex justify-end mt-6 space-x-4">
-          <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800">
+          <button className="px-4 py-2 text-sm text-gray-600 hover:text-gray-800 rounded border border-gray-300">
             Clear All Filters
           </button>
           <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded hover:bg-blue-700">
