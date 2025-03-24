@@ -156,6 +156,15 @@ export function filterData(data, filters) {
  * @returns {Object} Summary metrics
  */
 export function prepareMetricsSummary(filteredData) {
+  console.log("prepareMetricsSummary called with", filteredData.length, "records");
+  
+  // Log a sample of transaction amounts to see what's in the data
+  const sampleValues = filteredData.slice(0, 10).map(item => ({
+    amount: item.transaction_obligated_amount,
+    isNegative: item.transaction_obligated_amount < 0
+  }));
+  console.log("Sample transaction amounts:", sampleValues);
+  
   // Handle allocation & deallocation amounts
   const allocations = filteredData.filter(item => 
     item.transaction_obligated_amount !== null && 
@@ -167,11 +176,16 @@ export function prepareMetricsSummary(filteredData) {
     item.transaction_obligated_amount < 0
   );
   
+  console.log(`Found ${allocations.length} allocations and ${deallocations.length} deallocations`);
+  
   const totalAllocations = allocations.reduce((sum, item) => 
     sum + item.transaction_obligated_amount, 0);
     
   const totalDeallocations = Math.abs(deallocations.reduce((sum, item) => 
     sum + item.transaction_obligated_amount, 0));
+  
+  console.log("Total allocations:", totalAllocations);
+  console.log("Total deallocations:", totalDeallocations);
     
   const netChange = totalAllocations - totalDeallocations;
   

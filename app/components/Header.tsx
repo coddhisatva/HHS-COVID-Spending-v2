@@ -1,5 +1,4 @@
 import React from 'react';
-import HorizontalFilters from './HorizontalFilters';
 
 type SegmentedButtonProps = {
   options: { value: string; label: string }[];
@@ -56,10 +55,8 @@ const Header = () => {
             </p>
           </div>
           
-          <div className="flex flex-wrap items-center space-x-3 mt-3 md:mt-0">
-            <HorizontalFilters />
-            
-            <div className="flex space-x-3 mt-3 sm:mt-0">
+          <div className="flex flex-col md:flex-row gap-3 mt-3 md:mt-0">
+            <div className="flex flex-wrap gap-3">
               <SegmentedButton 
                 options={dataSourceOptions} 
                 activeValue="contracts" 

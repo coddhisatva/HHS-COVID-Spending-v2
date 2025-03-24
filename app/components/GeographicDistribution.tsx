@@ -70,21 +70,29 @@ const GeographicDistribution: React.FC = () => {
   // Process geographic data when data changes
   useEffect(() => {
     if (data && data.geographic) {
+      console.log("Geographic data loaded:", data.geographic.length, "states");
       setMapData(data.geographic);
     }
   }, [data]);
 
   // Create/update the map when mapData changes
   useEffect(() => {
-    if (!mapRef.current || !mapData.length) return;
+    if (!mapRef.current || !mapData.length) {
+      console.log("Map ref not available or no map data yet");
+      return;
+    }
 
+    console.log("Rendering map with", mapData.length, "states");
+    
     // Clear any existing visualization
     d3.select(mapRef.current).selectAll("*").remove();
 
     // Set up dimensions and create SVG
     const container = mapRef.current;
     const width = container.clientWidth;
-    const height = container.clientHeight || 500; // Default height if not set by CSS
+    const height = container.clientHeight || 400; // Default height if not set by CSS
+    
+    console.log("Map container dimensions:", width, "x", height);
 
     const svg = d3.select(container)
       .append("svg")
@@ -98,21 +106,29 @@ const GeographicDistribution: React.FC = () => {
 
     // Create projection for US map
     const projection = d3.geoAlbersUsa()
-      .fitSize([width, height], { type: "Sphere" } as any);
+      .fitSize([width - 20, height - 60], { type: "Sphere" } as any);
 
     // Create path generator
     const path = d3.geoPath().projection(projection);
 
     // Determine color scale based on funding amounts
     const maxAmount = d3.max(mapData, d => d.amount) || 0;
+    console.log("Max funding amount:", maxAmount);
     const colorScale = d3.scaleSequential(d3.interpolateBlues)
-      .domain([0, maxAmount]);
+      .domain([0, maxAmount])
+      .clamp(true);
 
     // Load the US TopoJSON data
+    console.log("Loading US TopoJSON data");
     d3.json<any>("https://cdn.jsdelivr.net/npm/us-atlas@3/states-10m.json")
       .then(us => {
-        if (!us) return;
+        if (!us) {
+          console.error("Failed to load US TopoJSON data");
+          return;
+        }
 
+        console.log("US TopoJSON data loaded successfully");
+        
         // Convert TopoJSON to GeoJSON
         const states = feature(us, us.objects.states) as any;
 
@@ -157,6 +173,7 @@ const GeographicDistribution: React.FC = () => {
         };
 
         // Draw states
+        console.log("Drawing", states.features.length, "states");
         g.selectAll("path")
           .data(states.features)
           .join("path")
@@ -168,7 +185,7 @@ const GeographicDistribution: React.FC = () => {
           })
           .attr("d", path)
           .attr("stroke", "#fff")
-          .attr("stroke-width", 0.5)
+          .attr("stroke-width", 1)
           .attr("class", "state")
           .on("mouseover", (event: any, d: any) => {
             const stateName = d.properties?.name || '';
@@ -291,6 +308,7 @@ const GeographicDistribution: React.FC = () => {
       
       // Only update if width actually changed
       if (newWidth !== width) {
+        console.log("Map container resized to width:", newWidth);
         // We'll just rerender the whole component for simplicity
         // In a production app, you might want to be more efficient
         d3.select(mapRef.current).selectAll("*").remove();
@@ -323,7 +341,7 @@ const GeographicDistribution: React.FC = () => {
     return (
       <div className="bg-white rounded-lg shadow-sm p-5 h-full">
         <h2 className="text-lg font-semibold mb-3">Geographic Distribution</h2>
-        <div className="h-80 flex items-center justify-center">
+        <div className="h-96 flex items-center justify-center">
           <div className="animate-pulse flex flex-col items-center">
             <div className="h-32 w-64 bg-gray-200 mb-4 rounded"></div>
             <div className="h-4 bg-gray-200 rounded w-32 mb-2.5"></div>
@@ -337,7 +355,7 @@ const GeographicDistribution: React.FC = () => {
     return (
       <div className="bg-white rounded-lg shadow-sm p-5 h-full">
         <h2 className="text-lg font-semibold mb-3">Geographic Distribution</h2>
-        <div className="h-80 flex items-center justify-center">
+        <div className="h-96 flex items-center justify-center">
           <div className="text-gray-500 text-center">
             <p>No geographic data available for the selected filters.</p>
           </div>
@@ -347,10 +365,15 @@ const GeographicDistribution: React.FC = () => {
   }
 
   return (
-    <div className="bg-white rounded-lg shadow-sm p-5 h-full">
+    <div className="bg-white rounded-lg shadow-sm p-5 h-full border border-gray-200">
       <h2 className="text-lg font-semibold mb-3">Geographic Distribution</h2>
-      <div ref={mapRef} className="h-80 w-full relative">
+      <div ref={mapRef} className="h-96 w-full relative" style={{ minHeight: "400px", border: "1px solid #e5e7eb" }}>
         {/* Map will be rendered here by D3 */}
+        {mapData.length > 0 && (
+          <div className="absolute top-0 right-0 bg-white/75 p-2 text-xs z-10">
+            {mapData.length} states with data
+          </div>
+        )}
       </div>
       
       {/* Tooltip */}

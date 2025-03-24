@@ -8,17 +8,19 @@ type MetricCardProps = {
   value: string;
   description: string;
   isNegative?: boolean;
+  note?: string;
 };
 
 const formatCurrency = (amount) => {
   return new Intl.NumberFormat('en-US', {
     style: 'currency',
     currency: 'USD',
+    minimumFractionDigits: 0,
     maximumFractionDigits: 0
   }).format(amount);
 };
 
-const MetricCard = ({ title, value, description, isNegative = false }: MetricCardProps) => {
+const MetricCard = ({ title, value, description, isNegative = false, note }: MetricCardProps) => {
   return (
     <div className="metric-card">
       <h3 className="text-lg font-medium text-gray-600 mb-1">{title}</h3>
@@ -26,6 +28,7 @@ const MetricCard = ({ title, value, description, isNegative = false }: MetricCar
         {value}
       </p>
       <p className="text-sm text-gray-500">{description}</p>
+      {note && <p className="text-xs text-gray-400 mt-2 italic">{note}</p>}
     </div>
   );
 };
@@ -80,6 +83,7 @@ const SummaryMetrics = () => {
       value: formatCurrency(metrics.totalDeallocations || 0),
       description: `${metrics.deallocationCount || 0} transactions`,
       isNegative: true,
+      note: null,
     },
     {
       id: 'net-change',
@@ -101,6 +105,7 @@ const SummaryMetrics = () => {
               value={metric.value}
               description={metric.description}
               isNegative={metric.isNegative}
+              note={metric.note}
             />
           ))}
         </div>

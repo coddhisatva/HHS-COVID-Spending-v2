@@ -1,0 +1,146 @@
+GeographicDistribution.tsx:73 Geographic data loaded: 0 states
+GeographicDistribution.tsx:81 Map ref not available or no map data yet
+DataContext.js:49 DataContext: Starting to fetch data...
+dataProcessor.js:9 Starting to load CSV data...
+dataProcessor.js:14 Attempting to fetch contracts data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv
+DataContext.js:71 DataContext: Still loading, skipping data processing...
+DataContext.js:49 DataContext: Starting to fetch data...
+dataProcessor.js:9 Starting to load CSV data...
+dataProcessor.js:14 Attempting to fetch contracts data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv
+DataContext.js:71 DataContext: Still loading, skipping data processing...
+GeographicDistribution.tsx:73 Geographic data loaded: 0 states
+GeographicDistribution.tsx:81 Map ref not available or no map data yet
+DataContext.js:49 DataContext: Starting to fetch data...
+dataProcessor.js:9 Starting to load CSV data...
+dataProcessor.js:14 Attempting to fetch contracts data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv
+DataContext.js:71 DataContext: Still loading, skipping data processing...
+DataContext.js:49 DataContext: Starting to fetch data...
+dataProcessor.js:9 Starting to load CSV data...
+dataProcessor.js:14 Attempting to fetch contracts data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Contracts_AccountBreakdownByAward_2025-03-23_H19M55S47_1.csv
+DataContext.js:71 DataContext: Still loading, skipping data processing...
+GeographicDistribution.tsx:81 Map ref not available or no map data yet
+dataProcessor.js:22 Contracts data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:24 Attempting to fetch assistance data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv
+dataProcessor.js:22 Contracts data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:24 Attempting to fetch assistance data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv
+dataProcessor.js:32 Assistance data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:35 Parsing contracts CSV data...
+dataProcessor.js:42 Parsing assistance CSV data...
+dataProcessor.js:49 Loaded 20 contract records and 20 assistance records
+dataProcessor.js:50 Sample contract record: {"recipient_name":"Moderna US Inc","transaction_obligated_amount":135000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":125000000}
+dataProcessor.js:51 Sample assistance record: {"recipient_name":"Harvard University","transaction_obligated_amount":55000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":52000000}
+DataContext.js:52 DataContext: Data loaded successfully: Object
+DataContext.js:81 DataContext: Processing data with filters: Object
+DataContext.js:82 DataContext: Raw data status: Object
+DataContext.js:100 DataContext: Selected data source length: 40
+DataContext.js:104 DataContext: After filtering, data length: 40
+dataProcessor.js:159 prepareMetricsSummary called with 40 records
+dataProcessor.js:166 Sample transaction amounts: Array(10)
+dataProcessor.js:179 Found 40 allocations and 0 deallocations
+dataProcessor.js:187 Total allocations: 1417000000
+dataProcessor.js:188 Total deallocations: 0
+DataContext.js:110 DataContext: Metrics summary processed successfully: Object
+dataProcessor.js:221 prepareEmergencyFundingData called with 40 records
+dataProcessor.js:230 Emergency funding codes found in data: Array(7)
+dataProcessor.js:255 Grouped emergency funding data: Object
+dataProcessor.js:288 Final emergency funding chart data: Array(7)
+DataContext.js:110 DataContext: Emergency funding data processed successfully: Array(7)
+DataContext.js:110 DataContext: Geographic data processed successfully: Array(19)
+DataContext.js:110 DataContext: Top recipients data processed successfully: Array(8)
+DataContext.js:125 DataContext: Setting processed data...
+dataProcessor.js:22 Contracts data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:24 Attempting to fetch assistance data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv
+GeographicDistribution.tsx:73 Geographic data loaded: 19 states
+dataProcessor.js:32 Assistance data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:35 Parsing contracts CSV data...
+dataProcessor.js:42 Parsing assistance CSV data...
+dataProcessor.js:49 Loaded 20 contract records and 20 assistance records
+dataProcessor.js:50 Sample contract record: {"recipient_name":"Moderna US Inc","transaction_obligated_amount":135000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":125000000}
+dataProcessor.js:51 Sample assistance record: {"recipient_name":"Harvard University","transaction_obligated_amount":55000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":52000000}
+DataContext.js:52 DataContext: Data loaded successfully: Object
+dataProcessor.js:22 Contracts data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:24 Attempting to fetch assistance data from: /data/HHS_C__Breakdown_by_Award/FY2025P01-P04_All_FA_AccountBreakdownByAward_2025-03-23_H19M55S47131691/FY2025P01-P04_All_FA_Assistance_AccountBreakdownByAward_2025-03-23_H19M56S43_1.csv
+GeographicDistribution.tsx:85 Rendering map with 19 states
+GeographicDistribution.tsx:95 Map container dimensions: 438 x 400
+GeographicDistribution.tsx:116 Max funding amount: 263000000
+GeographicDistribution.tsx:121 Loading US TopoJSON data
+DataContext.js:81 DataContext: Processing data with filters: Object
+DataContext.js:82 DataContext: Raw data status: Object
+DataContext.js:100 DataContext: Selected data source length: 40
+DataContext.js:104 DataContext: After filtering, data length: 40
+dataProcessor.js:159 prepareMetricsSummary called with 40 records
+dataProcessor.js:166 Sample transaction amounts: Array(10)
+dataProcessor.js:179 Found 40 allocations and 0 deallocations
+dataProcessor.js:187 Total allocations: 1417000000
+dataProcessor.js:188 Total deallocations: 0
+DataContext.js:110 DataContext: Metrics summary processed successfully: Object
+dataProcessor.js:221 prepareEmergencyFundingData called with 40 records
+dataProcessor.js:230 Emergency funding codes found in data: Array(7)
+dataProcessor.js:255 Grouped emergency funding data: Object
+dataProcessor.js:288 Final emergency funding chart data: Array(7)
+DataContext.js:110 DataContext: Emergency funding data processed successfully: Array(7)
+DataContext.js:110 DataContext: Geographic data processed successfully: Array(19)
+DataContext.js:110 DataContext: Top recipients data processed successfully: Array(8)
+DataContext.js:125 DataContext: Setting processed data...
+dataProcessor.js:32 Assistance data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:35 Parsing contracts CSV data...
+dataProcessor.js:42 Parsing assistance CSV data...
+dataProcessor.js:49 Loaded 20 contract records and 20 assistance records
+dataProcessor.js:50 Sample contract record: {"recipient_name":"Moderna US Inc","transaction_obligated_amount":135000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":125000000}
+dataProcessor.js:51 Sample assistance record: {"recipient_name":"Harvard University","transaction_obligated_amount":55000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":52000000}
+DataContext.js:52 DataContext: Data loaded successfully: Object
+dataProcessor.js:32 Assistance data fetched successfully, first 100 chars: recipient_name,transaction_obligated_amount,disaster_emergency_fund_code,primary_place_of_performanc
+dataProcessor.js:35 Parsing contracts CSV data...
+dataProcessor.js:42 Parsing assistance CSV data...
+dataProcessor.js:49 Loaded 20 contract records and 20 assistance records
+dataProcessor.js:50 Sample contract record: {"recipient_name":"Moderna US Inc","transaction_obligated_amount":135000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":125000000}
+dataProcessor.js:51 Sample assistance record: {"recipient_name":"Harvard University","transaction_obligated_amount":55000000,"disaster_emergency_fund_code":"N","primary_place_of_performance_state":"MA","gross_outlay_amount_FYB_to_period_end":52000000}
+DataContext.js:52 DataContext: Data loaded successfully: Object
+DataContext.js:81 DataContext: Processing data with filters: Object
+DataContext.js:82 DataContext: Raw data status: Object
+DataContext.js:100 DataContext: Selected data source length: 40
+DataContext.js:104 DataContext: After filtering, data length: 40
+dataProcessor.js:159 prepareMetricsSummary called with 40 records
+dataProcessor.js:166 Sample transaction amounts: Array(10)
+dataProcessor.js:179 Found 40 allocations and 0 deallocations
+dataProcessor.js:187 Total allocations: 1417000000
+dataProcessor.js:188 Total deallocations: 0
+DataContext.js:110 DataContext: Metrics summary processed successfully: Object
+dataProcessor.js:221 prepareEmergencyFundingData called with 40 records
+dataProcessor.js:230 Emergency funding codes found in data: Array(7)
+dataProcessor.js:255 Grouped emergency funding data: Object
+dataProcessor.js:288 Final emergency funding chart data: Array(7)
+DataContext.js:110 DataContext: Emergency funding data processed successfully: Array(7)
+DataContext.js:110 DataContext: Geographic data processed successfully: Array(19)
+DataContext.js:110 DataContext: Top recipients data processed successfully: Array(8)
+DataContext.js:125 DataContext: Setting processed data...
+DataContext.js:81 DataContext: Processing data with filters: Object
+DataContext.js:82 DataContext: Raw data status: Object
+DataContext.js:100 DataContext: Selected data source length: 40
+DataContext.js:104 DataContext: After filtering, data length: 40
+dataProcessor.js:159 prepareMetricsSummary called with 40 records
+dataProcessor.js:166 Sample transaction amounts: Array(10)
+dataProcessor.js:179 Found 40 allocations and 0 deallocations
+dataProcessor.js:187 Total allocations: 1417000000
+dataProcessor.js:188 Total deallocations: 0
+DataContext.js:110 DataContext: Metrics summary processed successfully: Object
+dataProcessor.js:221 prepareEmergencyFundingData called with 40 records
+dataProcessor.js:230 Emergency funding codes found in data: Array(7)
+dataProcessor.js:255 Grouped emergency funding data: Object
+dataProcessor.js:288 Final emergency funding chart data: Array(7)
+DataContext.js:110 DataContext: Emergency funding data processed successfully: Array(7)
+DataContext.js:110 DataContext: Geographic data processed successfully: Array(19)
+DataContext.js:110 DataContext: Top recipients data processed successfully: Array(8)
+DataContext.js:125 DataContext: Setting processed data...
+GeographicDistribution.tsx:73 Geographic data loaded: 19 states
+GeographicDistribution.tsx:310 Map container resized to width: 437.59375
+GeographicDistribution.tsx:85 Rendering map with 19 states
+GeographicDistribution.tsx:95 Map container dimensions: 438 x 400
+GeographicDistribution.tsx:116 Max funding amount: 263000000
+GeographicDistribution.tsx:121 Loading US TopoJSON data
+GeographicDistribution.tsx:129 US TopoJSON data loaded successfully
+GeographicDistribution.tsx:175 Drawing 56 states
+GeographicDistribution.tsx:310 Map container resized to width: 437.59375
+GeographicDistribution.tsx:129 US TopoJSON data loaded successfully
+GeographicDistribution.tsx:175 Drawing 56 states
+GeographicDistribution.tsx:310 Map container resized to width: 529.59375
